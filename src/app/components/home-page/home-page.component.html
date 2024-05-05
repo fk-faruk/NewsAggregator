@@ -1,0 +1,112 @@
+<app-nav-bar (childEvent)="receiveDatafromChild($event)"  [dataFromParent]='favorite'> </app-nav-bar>
+
+<div class="flex flex-row justify-center align-middle">
+  <div
+    class="sm:w-full md:w-[50%] my-[20vh] p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <h5 class="text-2xl font-bold leading-none text-gray-900 dark:text-white">
+        Top Headlines
+      </h5>
+
+    </div>
+    @for(newsData of newheadline; track newsData){
+    <div class="flow-root my-[3vh]">
+      <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+        <li class="">
+         
+          <div class="flex items-center flex-row-reverse">
+            @if(newsData.urlToImage){
+            <div
+              class="col-span-2 mt-[5vh] sm:w-9 sm:h-9 md:w-36 md:h-36 rounded-sm mb-3 shadow-lg flex justify-center items-center"
+            >
+              <img
+                class="object-cover sm:w-9 sm:h-9 md:w-36 md:h-36 rounded-sm"
+                src="{{ newsData.urlToImage }}"
+                alt=""
+              />
+            </div>
+            }@else{
+            <div
+              class="col-span-2 sm:w-9 sm:h-9 md:w-16 md:h-16 rounded-full mb-3 shadow-lg flex justify-center items-center bg-red-200"
+            ></div>
+            }
+            <!-- <div class="flex-shrink-0">
+                        <img class="w-[10vh] rounded-full" src={{newsData.urlToImage}} alt="Neil image">
+                    </div> -->
+
+            <div class="md:flex-1 md:min-w-0  sm:grid">
+              <div class="md:flex md:flex-row gap-2 sm:flex-col">
+                <div
+                  class="col-span-2 sm:w-4 sm:h-4 md:w-6 md:h-6 rounded-full mb-3 shadow-lg flex justify-center items-center bg-green-200"
+                ></div>
+                <div></div>
+                <div class=" text-[1.3vh] font-medium mt-1 w-[10vh] md:truncate   ">
+                  {{ newsData.author || 'Not Available' }} 
+                </div>
+                <div class=" text-[1.3vh] font-medium mt-1 text-left">
+                    {{ newsData.publishedAt | date }}
+                </div>
+              </div>
+              <div class=" mt-[-0.5vh]">
+              <p
+                class="text-wrap sm:w-full md:w-[90%]  font-bold text-gray-900 md:truncate dark:text-white md:font"
+              >
+                {{ newsData.title }}
+              </p>
+              <p
+                class=" w-[75%] mt-2 text-gray-500 text-wrap truncate dark:text-gray-400 md:fonts"
+              >
+                {{ newsData.description }}
+              </p>
+            </div>
+            </div>
+            <!-- <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                        $320
+                    </div> -->
+          </div>
+        </li>
+      </ul>
+      <div class="">
+      <a target="_blank" href="{{newsData.url}}" class="inline-flex mt-[2vh] items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        Read more
+        <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+        </svg>
+    </a>
+    <button type="button" (click)='AddTofavourite(newsData.author)' [ngClass]="{'clicked': newsData.author === selectedItem}" class= " ml-2 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+      
+      Add to favourite <i class="fa-regular fa-heart"></i></button>
+  </div>
+
+
+
+    </div>
+    <hr>
+    }
+    <hr>
+    <div class="flex mt-3">
+      <!-- Previous Button -->
+      <button [disabled]="disablePrev" (click)='prevPage()' type="button" class="flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+        <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+        </svg>
+        Previous
+      </button>
+      <span class="py-1 px-2">Page {{page}} of {{totalPages}} </span>
+      <button (click)="nextPage()" type="button" href="#" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+        Next
+        <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  
+  
+</div>
+
+
+
+<app-footer/>
